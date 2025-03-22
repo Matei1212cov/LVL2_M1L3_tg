@@ -1,6 +1,6 @@
 import telebot
 from bot_logic import gen_pass, gen_emodji, flip_coin  # Импортируем функции из bot_logic
-
+from telebot import custom_filters
 # Замени 'TOKEN' на токен твоего бота
 bot = telebot.TeleBot("TOKEN")
 
@@ -28,8 +28,14 @@ def send_emodji(message):
 
 @bot.message_handler(commands=['coin'])
 def send_coin(message):
-    coin = flip_coin()
-    bot.reply_to(message, f"Монетка выпала так: {coin}")
+    coin = flip_bot.add_custom_filter.coin()
+    bot.reply_to(message, f"Монетка выпала так: {coin}") 
+
+@bot.message_handler(chat_types=['supergroup'], is_chat_admin=True)
+def answer_for_admin(message):
+    bot.send_message(message.chat.id,"hello my admin")
+
 
 # Запускаем бота
+bot.add_custom_filter(custom_filters.IsAdminFilter(bot))
 bot.polling()
